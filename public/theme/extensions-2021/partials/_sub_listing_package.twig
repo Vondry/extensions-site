@@ -1,6 +1,6 @@
 
-<article role="article" class="media columns">
-    <div class="media-content column is-7">
+<article role="article" class="media">
+    <div class="media-content">
 
             <h3><a href="{{ record|link }}">{{ record|title }}</a></h3>
 
@@ -9,12 +9,13 @@
             <p class="meta">
 
                 {% if record.packagist_type == 'bolt-theme' %}
-                    <span class="tag is-warning">Theme</span>
+                    <span class="tag is-theme">Theme</span>
                 {% else %}
-                    <span class="tag is-primary">Extension</span>
+                    <span class="tag is-extension">Extension</span>
                 {% endif %}
 
-                Updated: {{ record.time_updated|localedatetime("%B %e, %Y") }}</p>
+            </p>
+            <p class="date">Updated: {{ record.time_updated|localedatetime("%B %e, %Y") }}</p>
 
 
     </div>

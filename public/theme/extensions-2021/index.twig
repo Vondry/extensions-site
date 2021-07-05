@@ -7,27 +7,31 @@
             {% if homepage %}
             <h1>{{ homepage.title }}</h1>
 
-            <div class="teaser">{{ homepage.teaser }}</div>
+            <div class="search-container">
+                <form class="search" method="get" action="{{ path('search') }}" enctype="text/plain">
+                    
+                        <input class="input-search" type="text" placeholder="Search.." name="search">
+                    
+                    <button type="submit" class="search-button"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
         </div>
         {% else %}
             {# Remove this include if you don't need it anymore. #}
             {{ include('partials/_no_content.twig') }}
         {% endif %}
         <div class="content-wrapper">
-            <h2>Most recently updated Packages</h2>
             {% setcontent records = 'packages' order '-time_updated' limit 6 %}
             {% for record in records %}
-                <div class="news-wrapper">
+                <div class="item">
                     {% include('partials/_sub_listing_package.twig') %}
                 </div>
             {% else %}
                 <p>{{ __("general.phrase.no-content-found") }}</p>
             {% endfor %}
         </div>
-        <div class="news-wrapper">
-            {{ pager(records, template = 'helpers/_pager_bulma.html.twig') }}
-        </div>
-        {% include "partials/_sub_recent_packages.twig" %}
+        
+        {{ pager(records) }}
 
     </main>
 {% endblock main %}
