@@ -20,7 +20,7 @@
 
                 {% if record.packagist_name %}
                     <div class="package instructions">
-                        <p>Installation instructions:</p>
+                        <p><strong>Installation instructions:</strong></p>
                         <p class="package current-version">{% if record.packagist_type == 'bolt-theme' %}
                                 composer require {{ record.packagist_name }}
                                 <br>

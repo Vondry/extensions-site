@@ -234,7 +234,7 @@ h3 {
     margin-bottom: 0;
 }
 
-p, a, ol, ul {
+p, li {
     font-size: var(--text-md);
     margin-bottom: 0;
 }
@@ -267,6 +267,12 @@ main {
 .imagedetails1 {
     width: 35px;
     height: 45px;
+}
+
+.image-screenshot img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--color-contrast-lower);
 }
 
 /** header + nav */
@@ -684,14 +690,17 @@ footer a {
 @media (min-width: 1024px) {
     .content-wrapper {
         grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: repeat(2, 400px);
+        grid-template-rows: repeat(2, min-content);
     }
 }
 
 .content-wrapper .item {
+    display: flex;
+    flex-direction: column;
     padding: var(--space-md);
     border: 1px solid #efefef;
     overflow: hidden;
+    max-height: 420px;
     transition: box-shadow, .2s ease-in-out;
     -webkit-transition: box-shadow, .2s ease-in-out;
     -moz-transition: box-shadow, .2s ease-in-out;
@@ -706,7 +715,24 @@ footer a {
 
 .item h3 {
     margin-block-start: 0;
+}
+
+.item h3 a {
     color: var(--color-primary);
+}
+
+.item a:visited {
+    color: var(--color-primary);
+}
+
+.item p {
+    margin-block-start: 0;
+    margin-block-end: auto;
+	width: 100%;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
 }
 
 .item .date {
@@ -758,6 +784,112 @@ footer a {
     display: flex;
     flex-direction: column;
     height: 230px;
+}
+
+/** Detail pagina */
+
+.detail-page {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+
+    display: grid; 
+    grid-template-columns: 1fr; 
+    grid-auto-rows: auto;
+    gap: 1em; 
+    width: 100%; 
+}
+
+.package.description,  
+.package.instructions,
+.package.details,
+.detail-page .package.screenshot {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+}
+
+.package.description {
+    grid-row: 1;
+}
+
+.detail-page .package.screenshot {
+    grid-row: 2;
+}
+
+.package.instructions {
+    grid-row: 3;
+}
+
+.package.details {
+    grid-row: 4;
+}
+
+
+@media screen and (min-width: 1024px) {
+
+    .detail-page {
+        grid-column: 1 / -1;
+        grid-row: 1 / -1;
+
+        grid-template-columns: 1fr 1fr; 
+
+        border-block: 2px solid var(--color-primary-light);
+        padding-block: var(--space-md);
+        margin-block-end: var(--space-md);
+
+    }
+
+
+    .left { 
+        grid-column: 1 / 2;
+    }
+    .right { 
+        grid-column: 2 / 3;
+    }
+
+
+    .package.description,  
+    .package.instructions,
+    .package.details {
+        grid-column: 1 /2;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .package.description {
+        grid-row: 1;
+    }
+
+    .package.instructions {
+        grid-row: 2;
+    }
+
+    .package.details {
+        grid-row: 3;
+    }
+
+    .package.details ::marker {
+        color: var(--color-primary);
+    }
+
+    .detail-page .package.screenshot {
+        grid-column: 2 / 3;
+        grid-row: 1 / span 2;
+    }
+
+}
+
+.url-list {
+    width: min(1100px, 100vw - 2rem);
+    margin: 0 auto;
+}
+
+@media screen and (min-width: 769px) {
+
+    .url-list ul {
+        column-count: 2;
+        column-gap: var(--space-md);
+    }
 }
 
 /** Paginatie */

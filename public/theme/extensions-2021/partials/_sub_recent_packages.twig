@@ -11,14 +11,21 @@
     <div class="url-list">
         {% if type == 'bolt-extension' %}
             <h3>Recently updated extensions</h3>
+            <ul>
         {% else %}
             <h3>Recently updated themes</h3>
+            <ul>
         {% endif %}
 
         {% for record in records %}
-            <a href="{{ record|link }}">{{ record|title }}</a>
+            <li>
+                <a href="{{ record|link }}">{{ record|title }}</a>
+            </li>
+            
         {% else %}
             {{ __('contenttypes.generic.no-recent', {'%contenttype%': ct.slug}) }}
         {% endfor %}
+        </ul>
     </div>
+
 {% endfor %}
