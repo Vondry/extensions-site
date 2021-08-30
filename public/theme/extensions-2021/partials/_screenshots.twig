@@ -10,7 +10,7 @@
                 {% set imageUrl = record.repository|replace({'github.com': 'raw.githubusercontent.com'}) ~ '/master/' ~ screenshots|first.value|first %}
                 <a href="{{ imageUrl }}">
                     <img src="{{ imageUrl }}" alt="Screenshot of {{ record|title }}"
-                         style="max-width: 350px; border:1px solid #CCC; margin-right: 1rem;">
+                         >
                 </a>
             </figure>
 
