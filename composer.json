@@ -44,5 +44,11 @@
             "require": "^5.1"
         },
         "public-dir": "public"
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true,
+            "drupol/composer-packages": true
+        }
     }
 }
