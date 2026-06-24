@@ -27,10 +27,10 @@ copy-assets: ## to install copy assets
 	cp vendor/bolt/core/package.json ../assets/
 
 server: ## to start server
-	bin/console server:start 127.0.0.1:8088 || true
+	symfony server:start --port=8088 --daemon || true
 
 server-stop: ## to stop server
-	bin/console server:stop
+	symfony server:stop
 
 cache: ## to clean cache
 	bin/console cache:clear

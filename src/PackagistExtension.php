@@ -13,7 +13,7 @@ use Bolt\Repository\ContentRepository;
 use Bolt\Storage\Query;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\HttpClient;
-use Tightenco\Collect\Support\Collection;
+use Illuminate\Support\Collection;
 
 class PackagistExtension extends BaseExtension
 {

@@ -1,29 +1,33 @@
 framework:
-    secret: '%env(APP_SECRET)%'
-    csrf_protection:
-        enabled: true
-    http_method_override: true
-    trusted_hosts: ~
-    session:
-        handler_id: ~
-        cookie_lifetime: 1209600
-        storage_factory_id: session.storage.factory.native
-    esi:
-        enabled: true
-    fragments:
-        enabled: true
-    php_errors:
-        log: true
-    assets:
-        json_manifest_path: '%kernel.project_dir%/%bolt.public_folder%/assets/manifest.json'
-    cache:
-        prefix_seed: bolt
-    ide: phpstorm
-    validation:
-        email_validation_mode: html5
-        enable_annotations: true
-    translator:
-        paths:
-            - '%kernel.project_dir%/translations'
-            - '%kernel.project_dir%/vendor/bolt/core/translations'
-    error_controller: 'Bolt\Controller\ErrorController::showAction'
+  secret: '%env(APP_SECRET)%'
+  csrf_protection:
+    enabled: true
+  http_method_override: true
+  trusted_hosts:
+    - '%env(default::SYMFONY_TRUSTED_HOSTS)%'
+  session:
+    handler_id: ~
+    cookie_lifetime: 1209600
+    storage_factory_id: session.storage.factory.native
+    cookie_secure: true
+    cookie_samesite: lax
+  esi:
+    enabled: true
+  fragments:
+    enabled: true
+  php_errors:
+    log: true
+  assets:
+    json_manifest_path: '%kernel.project_dir%/%bolt.public_folder%/assets/manifest.json'
+  cache:
+    prefix_seed: bolt
+  ide: phpstorm
+  validation:
+    email_validation_mode: html5
+  translator:
+    paths:
+      - '%kernel.project_dir%/translations'
+      - '%kernel.project_dir%/vendor/bolt/core/translations'
+  error_controller: 'Bolt\Controller\ErrorController::showAction'
+  annotations: false
+  handle_all_throwables: true

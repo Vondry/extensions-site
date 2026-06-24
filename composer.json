@@ -1,25 +1,29 @@
 {
     "name": "bolt/project",
     "type": "project",
-    "description": "Bolt 5 standard project skeleton",
+    "description": "Bolt 6 standard project skeleton",
     "license": "MIT",
     "require": {
-        "bobdenotter/configuration-notices": "^1.0",
-        "bolt/assets": "^5.0",
-        "bolt/core": "^5.0",
-        "bolt/themes": "^3.3",
-        "symfony/flex": "^1.17 || ^2.0",
-        "doctrine/lexer": "^2.0"
+        "php": "^8.2",
+        "bolt/assets": "~6.0",
+        "bolt/configuration-notices-widget": "^3.0",
+        "bolt/core": "~6.0",
+        "bolt/themes": "^3.5",
+        "bolt/weatherwidget": "^3.0",
+        "symfony/flex": "^2.0"
+    },
+    "replace": {
+        "paragonie/random_compat": "*"
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/",
+            "Bolt\\ComposerScripts\\": "vendor/bolt/core/bin/composer-script/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/",
-            "Bolt\\ComposerScripts\\": "vendor/bolt/core/bin/composer-script/"
+            "App\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "stable",
@@ -43,23 +47,26 @@
         "pre-package-uninstall": [
             "Bolt\\ComposerScripts\\ProjectEventHandler::prePackageUninstall"
         ],
-        "lint": "php vendor/bin/ecs check --no-progress-bar --no-interaction",
-        "lint:fix": "php vendor/bin/ecs check --no-progress-bar --no-interaction --fix",
-        "phpstan": "php vendor/bin/phpstan --memory-limit=1G analyse -c phpstan.neon src"
+        "lint": "@php vendor/bin/ecs check --no-progress-bar --no-interaction",
+        "lint:fix": "@php vendor/bin/ecs check --no-progress-bar --no-interaction --fix",
+        "phpstan": "@php vendor/bin/phpstan --memory-limit=1G analyse -c phpstan.neon src"
     },
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "^5.4"
+            "require": "^6.4"
         },
         "public-dir": "public"
     },
     "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
         "allow-plugins": {
             "symfony/flex": true,
+            "symfony/runtime": true,
+            "php-http/discovery": true,
             "drupol/composer-packages": true,
             "composer/package-versions-deprecated": true,
-            "cweagans/composer-patches": true,
             "phpstan/extension-installer": true
         }
     }
