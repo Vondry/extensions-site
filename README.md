@@ -1,62 +1,69 @@
-Bolt 4 standard project skeleton
-================================
+Bolt Extensions site (Bolt 6)
+=============================
 
-Welcome! This is a Bolt 4 project, set up using `composer create-project`. If
-you are the developer of this project, you can modify this README to the
-specifics of your project. Below are the general instructions to set up a _new_
-project, based off the same skeleton.
+This is the [Bolt CMS][bolt] extensions & themes registry site. It runs on
+**Bolt 6** (Symfony 6.4, PHP 8.2+) and periodically pulls the list of Bolt
+extensions and themes from [Packagist][packagist].
 
+Requirements
+------------
 
-Note: If you're updating from an earlier beta, read UPDATE.md for details.
+- PHP **8.2** or higher
+- [Composer][composer] 2.x
+- [Symfony CLI][symfony-cli] (recommended, for the local web server)
+- A database — **SQLite** works out of the box (default); MySQL/MariaDB or
+  PostgreSQL are also supported via `DATABASE_URL`.
 
----
+Local setup
+-----------
 
-Set up a new Bolt 4 project, using the following command, replacing
-`myprojectname` with your desired project's name.
-
-```bash
-composer create-project bolt/project myprojectname
-```
-
-Navigate into the newly created folder, and configure the database in `.env`.
-You can skip this step, if you'd like to use SQLite.
-
-```dotenv
-# SQLite
-DATABASE_URL=sqlite:///%kernel.project_dir%/var/data/bolt.sqlite
-
-# MySQL
-DATABASE_URL=mysql://root:"root%1"@127.0.0.1:3306/four
-```
-
-Set up the database, create the first user and add fixtures (dummy content):
+Clone the repository, then from the project root run these **three commands**:
 
 ```bash
-bin/console bolt:setup
+composer install         # 1. install dependencies (runs Bolt's post-install scripts)
+bin/console bolt:setup   # 2. create the database schema and the first admin user
+symfony server:start -d  # 3. start the local web server (http://127.0.0.1:8088)
 ```
 
-Run Bolt using the built-in webserver, Symfony CLI, Docker or your own
-preferred webserver:
+The committed `.env` defaults to SQLite, so no database server is required. To
+use MySQL/MariaDB or PostgreSQL instead, set `DATABASE_URL` in a local
+`.env.local` (which is git-ignored) rather than editing `.env`.
+
+Notes:
+
+- `bin/console bolt:setup` creates the schema and prompts you to create the
+  first admin user. Add `-f` to also load demo fixtures, or `-nf` to skip user
+  creation and start with an empty database.
+- Instead of the Symfony CLI you can use the Makefile helper, which serves on
+  port **8088**:
+
+  ```bash
+  make server        # start  -> http://127.0.0.1:8088
+  make server-stop   # stop
+  ```
+
+Open the site at the URL printed by the server. The Bolt admin panel is at
+`…/bolt` (e.g. http://127.0.0.1:8088/bolt). Log in with the user you created
+during `bolt:setup`.
+
+Loading the extensions & themes data
+------------------------------------
+
+The package registry is populated from Packagist by two custom console
+commands (defined in `src/PackagistExtension.php`):
 
 ```bash
-bin/console server:start
+bin/console app:list extension   # create records for all `bolt-extension` packages
+bin/console app:list theme       # create records for all `bolt-theme` packages
+bin/console app:update           # enrich every record with details from Packagist
 ```
 
-or…
+`app:list` creates lightweight stub records; `app:update` fills in the
+description, version, downloads, stars, maintainers, etc. Run all three after a
+fresh `bolt:setup` to populate the site, and re-run `app:update` periodically
+(e.g. via cron) to keep the data current.
 
-```bash
-symfony server:start -d
-symfony open:local
-```
-
-or…
-
-```bash
-make docker-install
-```
-
-Finally, open the new installation in a browser. If you've used one of the
-commands above, you'll find the frontpage at http://127.0.0.1:8000/ \
-The Bolt admin panel can be found at http://127.0.0.1:8000/bolt
-
-Log in using the credentials you created when setting up the first user.
+[bolt]: https://boltcms.io
+[packagist]: https://packagist.org
+[composer]: https://getcomposer.org
+[symfony-cli]: https://symfony.com/download

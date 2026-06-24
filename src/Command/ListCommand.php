@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\PackagistExtension;
+use Bolt\Extension\ExtensionRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,12 +17,12 @@ class ListCommand extends Command
     /** @var SymfonyStyle */
     private $io;
 
-    /** @var PackagistExtension */
-    private $packagist;
+    /** @var ExtensionRegistry */
+    private $extensionRegistry;
 
-    public function __construct(PackagistExtension $packagist)
+    public function __construct(ExtensionRegistry $extensionRegistry)
     {
-        $this->packagist = $packagist;
+        $this->extensionRegistry = $extensionRegistry;
         parent::__construct();
     }
 
@@ -54,7 +55,13 @@ class ListCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $this->packagist->fetchPackages($input->getArgument('type'));
+        // Fetch the extension from the registry, not via constructor injection:
+        // Bolt only injects the EntityManager/Query into the instance it manages
+        // through ExtensionRegistry::initializeAll() (via ExtensionSubscriber).
+        /** @var PackagistExtension $packagist */
+        $packagist = $this->extensionRegistry->getExtension(PackagistExtension::class);
+
+        $packagist->fetchPackages($input->getArgument('type'));
 
         $io->success('Done.');
 

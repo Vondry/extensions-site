@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\PackagistExtension;
+use Bolt\Extension\ExtensionRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,13 +15,13 @@ class UpdatePackagesCommand extends Command
     protected static $defaultName = 'app:update';
 
     /**
-     * @var PackagistExtension
+     * @var ExtensionRegistry
      */
-    private $packagist;
+    private $extensionRegistry;
 
-    public function __construct(PackagistExtension $packagist)
+    public function __construct(ExtensionRegistry $extensionRegistry)
     {
-        $this->packagist = $packagist;
+        $this->extensionRegistry = $extensionRegistry;
         parent::__construct();
     }
 
@@ -37,7 +38,13 @@ class UpdatePackagesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $updated = $this->packagist->updatePackages($input->getOption('name'));
+        // Fetch the extension from the registry, not via constructor injection:
+        // Bolt only injects the EntityManager/Query into the instance it manages
+        // through ExtensionRegistry::initializeAll() (via ExtensionSubscriber).
+        /** @var PackagistExtension $packagist */
+        $packagist = $this->extensionRegistry->getExtension(PackagistExtension::class);
+
+        $updated = $packagist->updatePackages($input->getOption('name'));
 
         $io->table(['Package', 'version', 'status'], $updated);
 
