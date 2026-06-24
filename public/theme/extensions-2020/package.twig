@@ -38,7 +38,13 @@ composer require {{ record.packagist_name }}</pre>
 
                     <ul>
                         <li>Type: <strong>{% if record.packagist_type == 'bolt-theme' %}Theme{% else %}Extension{% endif %}</strong></li>
-                        <li>Repository: <strong> <a href="{{ record.repository }}">{{ record.repository }}</a></strong></li>
+                        <li>Repository: <strong>
+                            {% if record.repository matches '#^https?://#' %}
+                                <a href="{{ record.repository }}">{{ record.repository }}</a>
+                            {% else %}
+                                {{ record.repository }}
+                            {% endif %}
+                        </strong></li>
                         <li>Popularity: <strong> {{ record.github_stars }}</strong> stars on Github.</li>
                         <li>Created: <strong> {{ record.time|localedatetime("%B %e, %Y") }}</strong> </li>
                         <li>Last updated: <strong> {{ record.time_updated|localedatetime("%B %e, %Y") }}</strong> </li>

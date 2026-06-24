@@ -43,8 +43,13 @@
                             <li>Type:
                                 {% if record.packagist_type == 'bolt-theme' %}Theme{% else %}Extension{% endif %}
                             </li>
-                            <li>Repository: <a href="{{ record.repository }}"
-                                               class="package-githubLink">{{ record.repository }}</a></li>
+                            <li>Repository:
+                                {% if record.repository matches '#^https?://#' %}
+                                    <a href="{{ record.repository }}" class="package-githubLink">{{ record.repository }}</a>
+                                {% else %}
+                                    {{ record.repository }}
+                                {% endif %}
+                            </li>
                             <li>Popularity: {{ record.github_stars }} stars on Github.</li>
                             <li>Created: {{ record.time|format_datetime(pattern="MMMM d, y") }}</li>
                             <li>Last updated: {{ record.time_updated|format_datetime(pattern="MMMM d, y") }}</li>

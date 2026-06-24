@@ -6,6 +6,10 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
+    api:
+      pattern: ^/api
+      http_basic: ~
+      login_throttling: ~
     main:
       pattern: ^/
       user_checker: Bolt\Security\UserChecker
@@ -13,10 +17,6 @@ security:
       remember_me: { secret: '%kernel.secret%', lifetime: 2592000, remember_me_parameter: 'login[remember_me]' }
       custom_authenticators: [Bolt\Security\LoginFormAuthenticator]
       entry_point: Bolt\Security\AuthenticationEntryPointRedirector
-      login_throttling: ~
-    api:
-      pattern: ^/api
-      http_basic: ~
       login_throttling: ~
   role_hierarchy:
     ROLE_DEVELOPER:
@@ -33,6 +33,9 @@ security:
   password_hashers:
     Bolt\Entity\User: auto
   access_control:
+    -
+      path: ^/api
+      roles: ADMIN_API_ACCESS
     -
       path: ^%bolt.backend_url%/login$
       roles: PUBLIC_ACCESS

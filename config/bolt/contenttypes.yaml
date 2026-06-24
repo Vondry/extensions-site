@@ -64,6 +64,9 @@ packages:
             type: text
             class: large
             group: content
+        slug:
+            type: slug
+            uses: title
         packagist_name:
             type: text
         packagist_type:

@@ -6,7 +6,6 @@ use App\PackagistExtension;
 use Bolt\Configuration\Config;
 use Bolt\Extension\ExtensionRegistry;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -48,6 +47,6 @@ class UpdatePackagesCommand extends Command
 
         $io->success('Done.');
 
-        return 1;
+        return Command::SUCCESS;
     }
 }

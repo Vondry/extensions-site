@@ -5,9 +5,15 @@
         {% set screenshots = [record.screenshots] %}
     {% endif %}
 
-    {% if screenshots|first.value|first %}
+    {% set screenshot = screenshots|first.value|first %}
+    {% if screenshot
+        and record.repository matches '#^https://github\\.com/[^/]+/[^/]+/?$#'
+        and screenshot matches '#^[A-Za-z0-9._/-]+\\.(gif|jpe?g|png|webp)$#i'
+        and '..' not in screenshot
+        and not (screenshot starts with '/')
+    %}
             <figure class="image-screenshot">
-                {% set imageUrl = record.repository|replace({'github.com': 'raw.githubusercontent.com'}) ~ '/master/' ~ screenshots|first.value|first %}
+                {% set imageUrl = record.repository|trim('/')|replace({'https://github.com': 'https://raw.githubusercontent.com'}) ~ '/master/' ~ screenshot %}
                 <a href="{{ imageUrl }}">
                     <img src="{{ imageUrl }}" alt="Screenshot of {{ record|title }}"
                          >
