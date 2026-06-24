@@ -20,8 +20,6 @@
 
                     <p><strong>{{ record.description }}</strong></p>
 
-                    {{ dump(record.fieldvalues) }}
-
                     <p>Installation instructions:</p>
 
 {% if record.packagist_type == 'bolt-theme' %}
@@ -46,8 +44,8 @@ composer require {{ record.packagist_name }}</pre>
                             {% endif %}
                         </strong></li>
                         <li>Popularity: <strong> {{ record.github_stars }}</strong> stars on Github.</li>
-                        <li>Created: <strong> {{ record.time|localedatetime("%B %e, %Y") }}</strong> </li>
-                        <li>Last updated: <strong> {{ record.time_updated|localedatetime("%B %e, %Y") }}</strong> </li>
+                        <li>Created: <strong> {{ record.time|format_datetime(pattern="MMMM d, y") }}</strong> </li>
+                        <li>Last updated: <strong> {{ record.time_updated|format_datetime(pattern="MMMM d, y") }}</strong> </li>
                         <li>Downloads: <strong> {{ record.downloads_total }}</strong> total,
                             <strong>{{ record.downloads_monthly }}</strong> monthly,
                                 <strong>{{ record.downloads_daily }}</strong> daily, </li>

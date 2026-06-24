@@ -25,9 +25,6 @@ class PackagistExtension extends BaseExtension
     private const MAX_COUNT = 500;
     private $updated = [];
 
-    /** @var ContentRepository */
-    private $contentRepository;
-
     public function getName(): string
     {
         return "Packagist API fetcher";
@@ -148,7 +145,7 @@ class PackagistExtension extends BaseExtension
                 $this->updateRecord($record, $responseArray, $versionsArray, $packagistName);
 
             } catch (\Throwable $exception) {
-                dump(sprintf('Could not update %s: %s', $url, $exception->getMessage()));
+                error_log(sprintf('Could not update %s: %s', $url, $exception->getMessage()));
                 $record->setStatus(Statuses::HELD);
                 $this->updated[] = [$packagistName, '-', 'held'];
             }

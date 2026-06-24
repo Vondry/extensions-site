@@ -3,8 +3,6 @@
 namespace App\Command;
 
 use App\PackagistExtension;
-use Bolt\Configuration\Config;
-use Bolt\Extension\ExtensionRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,12 +16,12 @@ class ListCommand extends Command
     /** @var SymfonyStyle */
     private $io;
 
-    /** @var ExtensionRegistry */
-    private $extensionRegistry;
+    /** @var PackagistExtension */
+    private $packagist;
 
-    public function __construct(ExtensionRegistry $extensionRegistry, Config $config)
+    public function __construct(PackagistExtension $packagist)
     {
-        $this->extensionRegistry = $extensionRegistry;
+        $this->packagist = $packagist;
         parent::__construct();
     }
 
@@ -56,9 +54,7 @@ class ListCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $packagist = $this->extensionRegistry->getExtension(PackagistExtension::class);
-
-        $packagist->fetchPackages($input->getArgument('type'));
+        $this->packagist->fetchPackages($input->getArgument('type'));
 
         $io->success('Done.');
 

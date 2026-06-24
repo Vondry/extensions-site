@@ -14,7 +14,7 @@
                     <span class="tag is-primary">Extension</span>
                 {% endif %}
 
-                Updated: {{ record.time_updated|localedatetime("%B %e, %Y") }}</p>
+                Updated: {{ record.time_updated|format_datetime(pattern="MMMM d, y") }}</p>
 
         </div>
     </div>
