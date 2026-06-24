@@ -19,10 +19,12 @@ class PackagistExtension extends BaseExtension
 {
     private const PACKAGIST_LIST = 'https://packagist.org/packages/list.json';
     private const PACKAGIST_DETAIL = 'https://packagist.org/packages/';
-    private const PACKAGIST_VERSIONS = 'https://repo.packagist.org/p/';
     private const TYPE_EXTENSION = 'bolt-extension';
     private const TYPE_THEME = 'bolt-theme';
-    private const MAX_COUNT = 100;
+    // Upper bound on packages refreshed per `app:update` run. Sized to comfortably
+    // cover the full Bolt extension + theme registry (~90 packages) with headroom,
+    // so a single run updates everything. Acts as a safety cap as the registry grows.
+    private const MAX_COUNT = 500;
     private $updated = [];
 
     /** @var ContentRepository */
@@ -62,7 +64,7 @@ class PackagistExtension extends BaseExtension
 
             if (!$record) {
                 echo "Add new stub: $package \n";
-                $this->insertPackageStub($package, self::TYPE_EXTENSION);
+                $this->insertPackageStub($package, $type);
             } else {
                 echo "Already have: $package \n";
             }
@@ -93,7 +95,11 @@ class PackagistExtension extends BaseExtension
         $client = HttpClient::create();
         $count = 0;
 
-        $params = ['order' => 'modifiedAt', 'status' => '!unknown'];
+        // Without an explicit limit, getContentForTwig() caps the result set at
+        // the ContentType's records_per_page (50 for 'packages'), which silently
+        // defeats the MAX_COUNT batch size below and leaves newer packages stuck
+        // as unpublished stubs. Ask for the full batch we intend to process.
+        $params = ['order' => 'modifiedAt', 'status' => '!unknown', 'limit' => self::MAX_COUNT];
 
         if ($name) {
             $params['packagist_name'] = $name;
@@ -115,9 +121,13 @@ class PackagistExtension extends BaseExtension
                 $response = $client->request('GET', $url);
                 $responseArray = current($response->toArray());
 
-                $url = sprintf('%s%s.json', self::PACKAGIST_VERSIONS, $packagistName);
-                $response = $client->request('GET', $url);
-                $versionsArray = current($response->toArray());
+                // The detail endpoint (packages/{name}.json) already contains the
+                // full version map under "versions", keyed by version string. This
+                // is the same shape the now-retired repo.packagist.org/p/{name}.json
+                // endpoint used to return (which now responds with HTTP 403), so we
+                // re-wrap it keyed by package name to keep the downstream logic
+                // unchanged instead of making a second, failing HTTP request.
+                $versionsArray = [$packagistName => $responseArray['versions'] ?? []];
 
                 $this->updateRecord($record, $responseArray, $versionsArray, $packagistName);
 

@@ -46,8 +46,8 @@
                             <li>Repository: <a href="{{ record.repository }}"
                                                class="package-githubLink">{{ record.repository }}</a></li>
                             <li>Popularity: {{ record.github_stars }} stars on Github.</li>
-                            <li>Created: {{ record.time|localedatetime("%B %e, %Y") }}</li>
-                            <li>Last updated: {{ record.time_updated|localedatetime("%B %e, %Y") }}</li>
+                            <li>Created: {{ record.time|format_datetime(pattern="MMMM d, y") }}</li>
+                            <li>Last updated: {{ record.time_updated|format_datetime(pattern="MMMM d, y") }}</li>
                             <li>Downloads: {{ record.downloads_total }} total,
                                 {{ record.downloads_monthly }} monthly,
                                 {{ record.downloads_daily }} daily,

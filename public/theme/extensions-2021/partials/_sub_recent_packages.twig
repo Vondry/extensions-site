@@ -23,7 +23,7 @@
             </li>
             
         {% else %}
-            {{ __('contenttypes.generic.no-recent', {'%contenttype%': ct.slug}) }}
+            {{ __('contenttypes.generic.no-recent', {'%contenttype%': type}) }}
         {% endfor %}
         </ul>
     </div>

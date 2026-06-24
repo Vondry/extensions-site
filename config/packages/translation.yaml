@@ -2,16 +2,22 @@ framework:
     default_locale: '%locale%'
     translator:
         fallbacks:
-            - 'en'
-
-# php_translation
+            - en
 translation:
     webui:
         enabled: true
     edit_in_place:
         enabled: false
+        config_name: site
     configs:
         bolt:
-            dirs: ["%kernel.project_dir%/vendor/bolt/core/templates", "%kernel.project_dir%/src"]
-            output_dir: "%kernel.project_dir%/translations"
-
+            dirs: ['%kernel.project_dir%/vendor/bolt/core/templates', '%kernel.project_dir%/src']
+            output_dir: '%kernel.project_dir%/translations'
+        site:
+            dirs: ['%kernel.project_dir%/public/theme/%bolt.theme%']
+            output_dir: '%kernel.project_dir%/translations'
+    locales: '%locales_array%'
+    default_locale: '%locale%'
+    auto_add_missing_translations:
+        enabled: true
+        config_name: site

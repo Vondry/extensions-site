@@ -15,7 +15,7 @@
                 {% endif %}
 
             </p>
-            <p class="date">Updated: {{ record.time_updated|localedatetime("%B %e, %Y") }}</p>
+            <p class="date">Updated: {{ record.time_updated|format_datetime(pattern="MMMM d, y") }}</p>
 
 
     </div>

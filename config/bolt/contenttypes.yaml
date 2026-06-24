@@ -71,21 +71,21 @@ packages:
         description:
             type: textarea
         time:
-            type: datetime
+            type: date
         time_updated:
-            type: datetime
+            type: date
         repository:
             type: text
         github_stars:
-            type: integer
+            type: number
         downloads_total:
-            type: integer
+            type: number
         downloads_monthly:
-            type: integer
+            type: number
         downloads_daily:
-            type: integer
+            type: number
         favers:
-            type: integer
+            type: number
         required_version:
             type: text
         maintainers:
@@ -169,7 +169,7 @@ entries:
             group: media
             upload: entries
         video:
-            type: video
+            type: embed
     relations:
         pages:
           multiple: false
