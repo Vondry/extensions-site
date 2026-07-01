@@ -5,12 +5,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "bolt/assets": "~6.0",
+        "bolt/assets": "^6.1",
         "bolt/configuration-notices-widget": "^3.0",
-        "bolt/core": "~6.0",
-        "bolt/themes": "^3.5",
+        "bolt/core": "^6.1",
+        "bolt/themes": "^3.6",
         "bolt/weatherwidget": "^3.0",
-        "symfony/flex": "^2.0"
+        "symfony/flex": "^2.11"
     },
     "replace": {
         "paragonie/random_compat": "*"
